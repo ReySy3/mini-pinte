@@ -27,32 +27,56 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
 
-    <h1>Mini Pinterest Gallery</h1>
+    <h1>Pinterest API Image Gallery</h1>
 
     <input type="text" id="searchQuery" placeholder="Enter search term">
     <button onclick="fetchPinterestImages()">Search</button>
 
+    <p class="error" id="errorMessage"></p>
     <div class="gallery" id="gallery"></div>
 
     <script>
         async function fetchPinterestImages() {
             const query = document.getElementById('searchQuery').value;
-            const response = await fetch(`https://deku-rest-apis.ooguy.com/api/pinterest?q=${query}`);
-            const data = await response.json();
-            
             const gallery = document.getElementById('gallery');
-            gallery.innerHTML = ''; // Clear previous images
+            const errorMessage = document.getElementById('errorMessage');
 
-            data.forEach(item => {
-                const img = document.createElement('img');
-                img.src = item.url;
-                img.alt = 'Pinterest Image';
-                gallery.appendChild(img);
-            });
+            // Clear previous results
+            gallery.innerHTML = '';
+            errorMessage.innerHTML = '';
+
+            if (!query) {
+                errorMessage.innerHTML = 'Please enter a search term!';
+                return;
+            }
+
+            try {
+                const response = await fetch(`https://deku-rest-apis.ooguy.com/api/pinterest?q=${query}`);
+                const data = await response.json();
+                
+                if (data.length === 0) {
+                    errorMessage.innerHTML = 'No images found!';
+                    return;
+                }
+
+                data.forEach(item => {
+                    const img = document.createElement('img');
+                    img.src = item.url;
+                    img.alt = 'Pinterest Image';
+                    gallery.appendChild(img);
+                });
+            } catch (error) {
+                console.log('Error fetching the API:', error);
+                errorMessage.innerHTML = 'Failed to fetch images. Please try again later.';
+            }
         }
     </script>
 
