@@ -59,21 +59,24 @@
             }
 
             try {
-                // Using a CORS proxy for testing (you can replace this with your server-side code if necessary)
-                const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
                 const apiUrl = `https://deku-rest-apis.ooguy.com/api/pinterest?q=${query}`;
                 
-                const response = await fetch(proxyUrl + apiUrl, {
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                });
+                // Log the API URL to check if it's being constructed correctly
+                console.log("Fetching from URL:", apiUrl);
+
+                const response = await fetch(apiUrl);
+
+                // Log response status to see if it's working
+                console.log("Response status:", response.status);
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error(`Network response was not ok: ${response.status}`);
                 }
 
                 const data = await response.json();
+                
+                // Log the data to check if it's being returned properly
+                console.log("API data:", data);
 
                 if (data.length === 0) {
                     errorMessage.innerHTML = 'No images found!';
@@ -88,7 +91,7 @@
                 });
             } catch (error) {
                 console.log('Error fetching the API:', error);
-                errorMessage.innerHTML = 'Failed to fetch images. Please try again later.';
+                errorMessage.innerHTML = `Failed to fetch images: ${error.message}`;
             }
         }
     </script>
