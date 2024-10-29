@@ -1,100 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pinterest API Example</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            text-align: center;
-        }
-        input, button {
-            margin: 10px;
-            padding: 10px;
-            font-size: 1rem;
-        }
-        .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-        }
-        .gallery img {
-            max-width: 200px;
-            max-height: 200px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-
-    <h1>Pinterest API Image Gallery</h1>
-
-    <input type="text" id="searchQuery" placeholder="Enter search term">
-    <button onclick="fetchPinterestImages()">Search</button>
-
-    <p class="error" id="errorMessage"></p>
-    <div class="gallery" id="gallery"></div>
-
-    <script>
-        async function fetchPinterestImages() {
-            const query = document.getElementById('searchQuery').value;
-            const gallery = document.getElementById('gallery');
-            const errorMessage = document.getElementById('errorMessage');
-
-            // Clear previous results
-            gallery.innerHTML = '';
-            errorMessage.innerHTML = '';
-
-            if (!query) {
-                errorMessage.innerHTML = 'Please enter a search term!';
-                return;
-            }
-
-            try {
-                const apiUrl = `https://deku-rest-apis.ooguy.com/api/pinterest?q=${query}`;
-                
-                // Log the API URL to check if it's being constructed correctly
-                console.log("Fetching from URL:", apiUrl);
-
-                const response = await fetch(apiUrl);
-
-                // Log response status to see if it's working
-                console.log("Response status:", response.status);
-
-                if (!response.ok) {
-                    throw new Error(`Network response was not ok: ${response.status}`);
-                }
-
-                const data = await response.json();
-                
-                // Log the data to check if it's being returned properly
-                console.log("API data:", data);
-
-                if (data.length === 0) {
-                    errorMessage.innerHTML = 'No images found!';
-                    return;
-                }
-
-                data.forEach(item => {
-                    const img = document.createElement('img');
-                    img.src = item.url;
-                    img.alt = 'Pinterest Image';
-                    gallery.appendChild(img);
-                });
-            } catch (error) {
-                console.log('Error fetching the API:', error);
-                errorMessage.innerHTML = `Failed to fetch images: ${error.message}`;
-            }
-        }
-    </script>
-
-</body>
+<!doctype html>
+<html lang="en"> 
+ <head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Pinterest Image Gallery</title> 
+  <link rel="stylesheet" href="public/css/styles.css"> 
+  <script src="public/js/script.js" defer></script> 
+ </head> 
+ <body> 
+  <canvas id="matrix-bg"></canvas> 
+  <div class="container"> 
+   <h1>Interactive Pinterest Gallery</h1> 
+   <div class="search-container"> 
+    <input type="text" id="searchQuery" placeholder="Search image here..."> <button onclick="getImg()">Search</button> 
+   </div> 
+   <p class="error" id="errorMessage"></p> 
+   <div class="loading" id="loading"></div> 
+   <div class="gallery" id="gallery"></div> 
+  </div> 
+  <div id="imageModal" class="modal"> <span class="close">×</span> 
+   <img class="modal-content" id="modalImage"> <button class="download-btn" id="downloadBtn">Download</button> 
+  </div> 
+  <footer> 
+   <p>© 2024 Haru Pinterest. All rights reserved.</p> 
+   <p>Created by <a href="https://facebook.com/yuii022605" target="_blank">Haru</a></p> 
+  </footer> 
+ </body>
 </html>
