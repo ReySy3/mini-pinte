@@ -1,17 +1,23 @@
-/* Import Orbitron font */
+/* Import Orbitron Font */
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
 body,
 html {
     margin: 0;
     padding: 0;
-    font-family: 'Orbitron', sans-serif; /* Apply Orbitron font */
+    font-family: 'Orbitron', sans-serif; /* Apply Orbitron globally */
     color: #fff;
     overflow-x: hidden;
 }
 
+#searchQuery {
+     color: white; 
+     font-family: 'Orbitron', sans-serif;
+}
+
 #searchQuery::placeholder {
     color: #0f0;
+    font-family: 'Orbitron', sans-serif;
 }
 
 #matrix-bg {
@@ -244,4 +250,5 @@ button:hover {
     .gallery {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
+    
 }
