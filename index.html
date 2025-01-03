@@ -348,7 +348,7 @@
       }
 
       try {
-        const response = await fetch(`https://joshweb.click/api/pinterest?q=${encodeURIComponent(query)}`);
+        const response = await fetch(`https://api.joshweb.click/api/pinterest?q=${encodeURIComponent(query)}`);
         if (!response.ok) throw new Error(`Failed to fetch images: ${response.status}`);
 
         const data = await response.json();
